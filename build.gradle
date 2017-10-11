@@ -1,0 +1,54 @@
+group 'code-challenge'
+version '1.0'
+
+apply plugin: 'java'
+apply plugin: 'idea'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'com.codeborne:selenide:4.8'
+    testCompile "junit:junit:4.12"
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src/main/java'
+        }
+        resources {
+            srcDir 'src/main/resources'
+        }
+    }
+    test {
+        java {
+            srcDir 'src/test/java'
+        }
+    }
+}
+
+test {
+
+    tasks.withType(Test) {
+        useJUnit() {
+            scanForTestClasses = false
+            testLogging {
+                info {
+                    showStackTraces true
+                    exceptionFormat "full"
+                    events = ["failed", "standardOut"]
+                    displayGranularity = 3
+                }
+            }
+            include "**/ui/*"
+            exclude "**/UIBaseTestCase*"
+        }
+    }
+
+}
+
